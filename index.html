@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMS Blaster 📱</title>
+    <style>
+        body { font-family: sans-serif; background: #111; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: #222; padding: 30px; border-radius: 15px; width: 350px; box-shadow: 0 0 20px rgba(255, 0, 0, 0.2); text-align: center; }
+        h1 { color: #ff4757; }
+        input, textarea { width: 90%; margin: 10px 0; padding: 10px; background: #333; border: 1px solid #444; color: white; border-radius: 5px; }
+        button { width: 100%; padding: 10px; background: #ff4757; color: white; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; margin-top: 10px; }
+        button:hover { background: #e84118; }
+        #status { margin-top: 15px; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>📱 SMS Blaster</h1>
+        <p>Send a real text via Node.js</p>
+        
+        <input type="text" id="phone" placeholder="+919876543210 (Country Code Required)">
+        <textarea id="msg" placeholder="Type your secret message..."></textarea>
+        
+        <button onclick="sendText()">🚀 SEND SMS</button>
+        <p id="status"></p>
+    </div>
+
+    <script>
+        async function sendText() {
+            const phone = document.getElementById('phone').value;
+            const msg = document.getElementById('msg').value;
+            const status = document.getElementById('status');
+
+            status.innerText = "Sending...";
+            status.style.color = "yellow";
+
+            try {
+                const res = await fetch('http://localhost:3000/send-sms', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ to: phone, message: msg })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    status.innerText = "✅ Message Sent Successfully!";
+                    status.style.color = "#2ed573";
+                } else {
+                    status.innerText = "❌ Error: " + data.error;
+                    status.style.color = "red";
+                }
+            } catch (err) {
+                status.innerText = "❌ Server Error";
+                status.style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>
