@@ -5,7 +5,6 @@ const express = require('express');
 // ... rest of imports
 require('dotenv').config(); 
 
-const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const twilio = require('twilio');
@@ -61,8 +60,7 @@ app.get('/', (req, res) => {
 
 // ============================================
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 SMS Server running on port ${PORT}`));
+
 // 4. START SERVER
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 SMS Server running on port ${PORT}`));
