@@ -1,4 +1,8 @@
 // 1. LOAD SECRETS (Must be the first line!)
+const path = require('path'); // <--- ADD THIS LINE at the very top
+require('dotenv').config(); 
+const express = require('express');
+// ... rest of imports
 require('dotenv').config(); 
 
 const express = require('express');
@@ -41,7 +45,24 @@ app.post('/send-sms', (req, res) => {
         res.status(500).json({ success: false, error: err.message });
     });
 });
+// ... existing code ...
 
+// ============================================
+// FIX: SERVE THE FRONTEND (index.html)
+// ============================================
+
+// 1. Serve static files (css, js, images) if you have them
+app.use(express.static(path.join(__dirname)));
+
+// 2. Handle the root URL '/'
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// ============================================
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`🚀 SMS Server running on port ${PORT}`));
 // 4. START SERVER
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 SMS Server running on port ${PORT}`));
